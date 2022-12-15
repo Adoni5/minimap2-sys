@@ -85,6 +85,7 @@ fn gen() {
     bindgen::Builder::default()
         .header("minimap2.h")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        .opaque_type("std::.*")
         /*        .allowlist_type("mm_idxopt_t")
         .allowlist_type("mm_mapopt_t")
         .allowlist_function("mm_set_opt")
