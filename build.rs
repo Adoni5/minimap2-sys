@@ -65,6 +65,9 @@ fn configure(mut cc: &mut cc::Build) {
     cc.include("minimap2");
     cc.opt_level(2);
 
+    #[cfg(feature = "sse2only")]
+    sse2only(&mut cc);
+
     #[cfg(feature = "simde")]
     simde(&mut cc);
 
@@ -156,7 +159,7 @@ fn target_specific(cc: &mut cc::Build) {
     cc.flag("-msse4.1");
 
     #[cfg(all(not(target_feature = "sse4.1"), target_feature = "sse2"))]
-    // cc.flag("-msse2");
+    cc.flag("-msse2");
 
     #[cfg(all(not(target_feature = "sse4.1"), target_feature = "sse2"))]
     cc.flag("-DKSW_SSE2_ONLY");
@@ -229,14 +232,14 @@ fn compile() {
 
 #[cfg(feature = "sse2only")]
 fn sse2only(cc: &mut cc::Build) {
-    // #[cfg(all(target_feature = "sse2", not(target_feature = "sse4.1")))]
-    // cc.flag("-DKSW_SSE2_ONLY");
+    #[cfg(all(target_feature = "sse2", not(target_feature = "sse4.1")))]
+    cc.flag("-DKSW_SSE2_ONLY");
 
-    // #[cfg(all(target_feature = "sse2", not(target_feature = "sse4.1")))]
-    // cc.flag("-mno-sse4.1");
+    #[cfg(all(target_feature = "sse2", not(target_feature = "sse4.1")))]
+    cc.flag("-mno-sse4.1");
 
-    // #[cfg(all(target_feature = "sse2", not(target_feature = "sse4.1")))]
-    // cc.flag("-msse2");
+    #[cfg(all(target_feature = "sse2", not(target_feature = "sse4.1")))]
+    cc.flag("-msse2");
 }
 
 #[cfg(feature = "bindgen")]
