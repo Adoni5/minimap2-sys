@@ -156,7 +156,7 @@ fn target_specific(cc: &mut cc::Build) {
     cc.flag("-msse4.1");
 
     #[cfg(all(not(target_feature = "sse4.1"), target_feature = "sse2"))]
-    cc.flag("-msse2");
+    // cc.flag("-msse2");
 
     #[cfg(all(not(target_feature = "sse4.1"), target_feature = "sse2"))]
     cc.flag("-DKSW_SSE2_ONLY");
